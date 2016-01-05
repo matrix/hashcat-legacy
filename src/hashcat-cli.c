@@ -13749,6 +13749,7 @@ void cpuid (uint32_t CPUInfo[4], const uint32_t InfoType)
 
 #endif
 
+/*
 uint32_t avx_enabled ()
 {
   uint32_t info[4];
@@ -13828,6 +13829,7 @@ uint32_t xop_enabled ()
 
   return 0;
 }
+*/
 
 int main (int argc, char *argv[])
 {
