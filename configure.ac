@@ -95,5 +95,5 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([gettimeofday memset select strchr strdup strerror strrchr strstr])
 
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile docs/Makefile masks/Makefile tables/Makefile salts/Makefile examples/Makefile rules/Makefile tools/Makefile charsets/Makefile])
 AC_OUTPUT
