@@ -1,4 +1,4 @@
-AC_PREREQ([2.69])
+AC_PREREQ([2.68])
 AC_INIT([hashcat], [2.00], [atom@hashcat.net])
 AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
@@ -24,6 +24,10 @@ AS_IF([test "x$enable_xop" = "xyes"], [
 
 AM_CONDITIONAL(XOP_ENABLED, test "x$xop_enabled" = xtrue)
 
+AC_ARG_ENABLE([osx], AS_HELP_STRING([--enable-osx], [force cpu to 64bit]))
+
+AS_IF([test "x$enable_osx" = "xyes"], [osx_enabled=true])
+
 case "$host_cpu" in
 	amd64)
 		cpu_amd64=true
@@ -36,9 +40,16 @@ case "$host_cpu" in
 		AH_TEMPLATE(CPU_X86_64, [define if building for x86_64])
 		;;
 	i*86)
-		cpu_x86=true
-		AC_DEFINE(CPU_X86)
-		AH_TEMPLATE(CPU_X86, [define if building for x86])
+		if test "$osx_enabled" = true
+		then
+			cpu_x86_64=true
+			AC_DEFINE(CPU_X86_64)
+			AH_TEMPLATE(CPU_X86_64, [define if building for x86_64])
+		else
+			cpu_x86=true
+			AC_DEFINE(CPU_X86)
+			AH_TEMPLATE(CPU_X86, [define if building for x86])
+		fi
 		;;
 esac
 
@@ -95,5 +106,16 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([gettimeofday memset select strchr strdup strerror strrchr strstr])
 
-AC_CONFIG_FILES([Makefile src/Makefile docs/Makefile masks/Makefile tables/Makefile salts/Makefile examples/Makefile rules/Makefile tools/Makefile charsets/Makefile])
+AC_CONFIG_FILES([
+	Makefile
+	src/Makefile
+	docs/Makefile
+	masks/Makefile
+	tables/Makefile
+	salts/Makefile
+	examples/Makefile
+	rules/Makefile
+	tools/Makefile
+	charsets/Makefile])
+
 AC_OUTPUT
