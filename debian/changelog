@@ -1,0 +1,5 @@
+hashcat (2.0.0) UNRELEASED; urgency=low
+
+  * Initial release.
+
+ -- Gabriele 'matrix' Gristina <matrix@hashcat.net>  Fri, 08 Jan 2016 13:47:03 +0100

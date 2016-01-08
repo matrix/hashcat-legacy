@@ -113,7 +113,6 @@ AC_CONFIG_FILES([
 	masks/Makefile
 	tables/Makefile
 	salts/Makefile
-	examples/Makefile
 	rules/Makefile
 	tools/Makefile
 	charsets/Makefile])
