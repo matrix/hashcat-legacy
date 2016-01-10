@@ -20,6 +20,8 @@
 #include "tsearch.h"
 #include "rp.h"
 #include "engine.h"
+#include "engine-utils.h"
+#include "engine-algo.h"
 
 // for interactive status prompt
 #if defined OSX || defined FREEBSD

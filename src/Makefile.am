@@ -2,7 +2,7 @@
 AM_CFLAGS = -W -Wall -pipe -I $(top_srcdir)/include -O2 -fomit-frame-pointer -funroll-loops
 
 bin_PROGRAMS = hashcat rules-debug
-hashcat_SOURCES = common.c tsearch.c rp.c engine.c hashcat-cli.c
+hashcat_SOURCES = common.c tsearch.c rp.c engine-utils.c engine-algo.c engine.c hashcat-cli.c
 hashcat_CFLAGS = $(AM_CFLAGS)
 
 rules_debug_SOURCES = common.c rp.c rules-debug.c
@@ -12,7 +12,7 @@ if CPU_AMD64
 if XOP_ENABLED
 
 bin_PROGRAMS += hashcat-XOP rules-debug-XOP
-hashcat_XOP_SOURCES = common.c tsearch.c rp.c engine.c hashcat-cli.c
+hashcat_XOP_SOURCES = common.c tsearch.c rp.c engine-utils.c engine-algo.c engine.c hashcat-cli.c
 hashcat_XOP_CFLAGS = $(AM_CFLAGS) -D__HC_XOP__ -m64 -mxop
 
 rules_debug_XOP_SOURCES = common.c rp.c rules-debug.c

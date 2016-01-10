@@ -635,60 +635,6 @@ static const char constant_phrase[] =
 uint64_t get_thread_words_total  (uint32_t num_threads);
 uint64_t get_thread_plains_total (uint32_t num_threads);
 
-void descrypt_decode (unsigned char digest[DIGEST_SIZE_DESCRYPT], unsigned char buf[HASH_SIZE_DESCRYPT]);
-void descrypt_encode (unsigned char digest[DIGEST_SIZE_DESCRYPT], unsigned char buf[HASH_SIZE_DESCRYPT]);
-
-void phpass_decode (unsigned char digest[DIGEST_SIZE_MD5], unsigned char buf[HASH_SIZE_PHPASS]);
-void phpass_encode (unsigned char digest[DIGEST_SIZE_MD5], unsigned char buf[HASH_SIZE_PHPASS]);
-
-void md5unix_decode (unsigned char digest[DIGEST_SIZE_MD5], unsigned char buf[HASH_SIZE_MD5UNIX]);
-void md5unix_encode (unsigned char digest[DIGEST_SIZE_MD5], unsigned char buf[HASH_SIZE_MD5UNIX]);
-
-void md5sun_decode (unsigned char digest[DIGEST_SIZE_MD5], unsigned char buf[HASH_SIZE_MD5SUN]);
-void md5sun_encode (unsigned char digest[DIGEST_SIZE_MD5], unsigned char buf[HASH_SIZE_MD5SUN]);
-
-void md5apr_decode (unsigned char digest[DIGEST_SIZE_MD5], unsigned char buf[HASH_SIZE_MD5APR]);
-void md5apr_encode (unsigned char digest[DIGEST_SIZE_MD5], unsigned char buf[HASH_SIZE_MD5APR]);
-
-void sha512unix_decode (unsigned char digest[DIGEST_SIZE_SHA512], unsigned char buf[HASH_SIZE_SHA512UNIX]);
-void sha512unix_encode (unsigned char digest[DIGEST_SIZE_SHA512], unsigned char buf[HASH_SIZE_SHA512UNIX]);
-
-void sha1b64_decode (unsigned char digest[DIGEST_SIZE_SHA1], unsigned char buf[HASH_SIZE_SHA1B64]);
-void sha1b64_encode (unsigned char digest[DIGEST_SIZE_SHA1], unsigned char buf[HASH_SIZE_SHA1B64]);
-
-void sha1b64s_decode (unsigned char digest[DIGEST_SIZE_SHA1], unsigned char salt[BLOCK_SIZE], uint32_t in_len, uint32_t *out_len, char *buf);
-void sha1b64s_encode (unsigned char digest[DIGEST_SIZE_SHA1], unsigned char salt[BLOCK_SIZE], uint32_t salt_len, char *buf);
-
-void sha256b64_decode (unsigned char digest[DIGEST_SIZE_SHA256], unsigned char buf[HASH_SIZE_SHA256B64]);
-void sha256b64_encode (unsigned char digest[DIGEST_SIZE_SHA256], unsigned char buf[HASH_SIZE_SHA256B64]);
-
-void sha1aix_decode (unsigned char digest[DIGEST_SIZE_SHA1], unsigned char buf[HASH_SIZE_SHA1AIX]);
-void sha1aix_encode (unsigned char digest[DIGEST_SIZE_SHA1], unsigned char buf[HASH_SIZE_SHA1AIX]);
-
-void sha256aix_decode (unsigned char digest[DIGEST_SIZE_SHA256], unsigned char buf[HASH_SIZE_SHA256AIX]);
-void sha256aix_encode (unsigned char digest[DIGEST_SIZE_SHA256], unsigned char buf[HASH_SIZE_SHA256AIX]);
-
-void sha512aix_decode (unsigned char digest[DIGEST_SIZE_SHA512], unsigned char buf[HASH_SIZE_SHA512AIX]);
-void sha512aix_encode (unsigned char digest[DIGEST_SIZE_SHA512], unsigned char buf[HASH_SIZE_SHA512AIX]);
-
-void sha1fortigate_decode (unsigned char digest[DIGEST_SIZE_SHA1], unsigned char salt[BLOCK_SIZE], char *buf);
-void sha1fortigate_encode (unsigned char digest[DIGEST_SIZE_SHA1], unsigned char salt[BLOCK_SIZE], char *buf);
-
-void sha256unix_decode (unsigned char digest[DIGEST_SIZE_SHA256], unsigned char buf[HASH_SIZE_SHA256UNIX]);
-void sha256unix_encode (unsigned char digest[DIGEST_SIZE_SHA256], unsigned char buf[HASH_SIZE_SHA256UNIX]);
-
-void md5cisco_decode (char in_buf[HASH_SIZE_MD5CISCO], uint32_t out_buf[4]);
-void md5cisco_encode (uint32_t in_buf[4], unsigned char *out_buf);
-
-void bcrypt_encode (char digest[DIGEST_SIZE_BCRYPT], char salt[16], char *bcrypt_str);
-void bcrypt_decode (char digest[HASH_SIZE_BCRYPT], char salt[SALT_SIZE_MIN_BCRYPT], char *hash_buf, char *salt_buf);
-
-void sha512b64s_encode (unsigned char digest[DIGEST_SIZE_SHA512], unsigned char salt[BLOCK_SIZE], uint32_t salt_len, char *buf);
-void sha512b64s_decode (unsigned char digest[DIGEST_SIZE_SHA512], unsigned char salt[BLOCK_SIZE], uint32_t in_len, uint32_t *out_len, char *buf);
-
-void drupal7_encode (unsigned char digest[DIGEST_SIZE_SHA512], unsigned char buf[HASH_SIZE_DRUPAL7]);
-void drupal7_decode (unsigned char digest[DIGEST_SIZE_SHA512], unsigned char buf[HASH_SIZE_DRUPAL7]);
-
 void format_plain  (FILE *fp, char *plain_ptr, uint plain_len, uint32_t output_authex);
 void format_output (FILE *fp, engine_parameter_t *engine_parameter, char *out_buf, char *plain_ptr, uint plain_len, uint64_t pos);
 
@@ -698,24 +644,6 @@ void handle_show_request (FILE *out_fp, engine_parameter_t *engine_parameter, po
 void handle_left_request (FILE *out_fp, engine_parameter_t *engine_parameter, pot_t *pot, char *input_buf, int input_len, char *hash_buf, char *salt_buf, uint32_t salt_len);
 
 char *strhashtype (const uint hash_mode);
-
-uint is_valid_hex_char (const char c);
-
-char hex_convert (char c);
-
-char hex_to_char (char hex[2]);
-
-char int_to_itoa64 (const char c);
-char itoa64_to_int (const char c);
-
-int base64_decode (char (*f) (const char), char *in_buf, int in_len, char *out_buf);
-int base64_encode (char (*f) (const char), char *in_buf, int in_len, char *out_buf);
-
-uint32_t hex_to_uint   (char hex[ 8]);
-uint64_t hex_to_uint64 (char hex[16]);
-
-void uint_to_hex_lower (uint32_t uint, char hex[8]);
-void uint_to_hex_upper (uint32_t uint, char hex[8]);
 
 void transform_netntlmv1_key (const uint8_t *nthash, uint8_t *key);
 
@@ -732,18 +660,8 @@ int compare_digest_netntlmv1  (const void *p1, const void *p2);
 int compare_digest_gost       (const void *p1, const void *p2);
 int compare_digest_bcrypt     (const void *p1, const void *p2);
 
-void descrypt_64    (plain_t *plains, digest_t *digests);
-void keccak_64      (plain_t *plains, digest_t *digests);
-void gost_64        (plain_t *plains, digest_t *digests);
-
 void _des_keysetup (uint32_t data[2], uint32_t Kc[16], uint32_t Kd[16], const uint s_skb[8][64]);
 void _des_encrypt  (uint32_t data[2], uint32_t Kc[16], uint32_t Kd[16], const uint s_SPtrans[8][64]);
-
-void hashcat_md4_64    (__m128i digests[4], __m128i W[16]);
-void hashcat_md5_64    (__m128i digests[4], __m128i W[16]);
-void hashcat_sha1_64   (__m128i digests[5], __m128i W[16]);
-void hashcat_sha256_64 (__m128i digests[8], __m128i W[16]);
-void hashcat_sha512_64 (__m128i digests[8], __m128i W[16]);
 
 void init_sse2 ();
 
