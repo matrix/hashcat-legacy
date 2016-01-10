@@ -14199,7 +14199,7 @@ int main (int argc, char *argv[])
   #if defined LINUX || defined OSX || defined FREEBSD
   if (!(tmp = strcat(homedir, "/.hashcat")))
   #else
-  if (!(tmp = strcat(homedir, "\.hashcat")))
+  if (!(tmp = strcat(homedir, "\\.hashcat")))
   #endif
   {
     log_error("Failed to append profile dir to homedir path (%s).\n", strerror(errno));
@@ -14210,7 +14210,11 @@ int main (int argc, char *argv[])
   if (stat(tmp, &st) != 0)
   {
     // log_info ("Creating new profile directory (%s).", tmp);
+    #if defined LINUX || defined OSX || defined FREEBSD
     if (mkdir (tmp, 0755) != 0)
+    #else
+    if (mkdir (tmp) != 0)
+    #endif
     {
       log_error("Failed to create a new profile directory (%s)(%d)(%s).", tmp, errno, strerror(errno));
       exit (-1);
@@ -14220,7 +14224,7 @@ int main (int argc, char *argv[])
   #if defined LINUX || defined OSX || defined FREEBSD
   if (!(tmp = strcat(tmp, "/sessions")))
   #else
-  if (!(tmp = strcat(tmp, "\sessions")))
+  if (!(tmp = strcat(tmp, "\\sessions")))
   #endif
   {
     log_error("Failed to append session dir to profile path (%s).\n", strerror(errno));
@@ -14231,7 +14235,11 @@ int main (int argc, char *argv[])
   if (stat(tmp, &st) != 0)
   {
     // log_info ("Creating new session directory (%s)\n", tmp);
+    #if defined LINUX || defined OSX || defined FREEBSD
     if (mkdir (tmp, 0755) != 0)
+    #else
+    if (mkdir (tmp) != 0)
+    #endif
     {
       log_error("Failed to create a new session directory (%s).", tmp);
       exit (-1);
@@ -14243,7 +14251,7 @@ int main (int argc, char *argv[])
   #if defined LINUX || defined OSX || defined FREEBSD
   if (!(file_pot = strcat(tmp, "/hashcat.pot")))
   #else
-  if (!(file_pot = strcat(tmp, "\hashcat.pot")))
+  if (!(file_pot = strcat(tmp, "\\hashcat.pot")))
   #endif
   {
     log_error("Failed to append pot filename to session path (%s).\n", strerror(errno));

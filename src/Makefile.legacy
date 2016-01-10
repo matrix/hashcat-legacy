@@ -34,8 +34,8 @@ LDFLAGS :=
 DIR_OSX64      = obj/osx64
 CC_OSX64       = i686-apple-darwin10-gcc
 LIBGMP_OSX64   = deps/gmp/osx64
-CFLAGS_OSX64   = $(CFLAGS) -I$(LIBGMP_OSX64)/include -D__HC_x86_64__ -DOSX -m64 -msse2 -fnested-functions -arch x86_64 -mmacosx-version-min=10.5
-LDFLAGS_OSX64  = $(LDFLAGS) -L$(LIBGMP_OSX64)/lib -lm -lpthread  -mmacosx-version-min=10.5 -lgmp
+CFLAGS_OSX64   = $(CFLAGS) -I$(LIBGMP_OSX64)/include -D__HC_x86_64__ -DOSX -m64 -msse2 -arch x86_64 -mmacosx-version-min=10.5
+LDFLAGS_OSX64  = $(LDFLAGS) -L$(LIBGMP_OSX64)/lib -lm -lpthread -lgmp
 
 $(DIR_OSX64)/rules-debug64.app: $(DIR_OSX64)/rp.o src/rules-debug.c
 	$(CC_OSX64) $(filter-out -s,$(CFLAGS_OSX64)) $(DIR_OSX64)/*.o src/rules-debug.c -o $@ $(LDFLAGS_OSX64)
@@ -45,8 +45,14 @@ $(DIR_OSX64)/hashcat-cli64.app: $(DIR_OSX64)/tsearch.o $(DIR_OSX64)/rp.o $(DIR_O
 	$(CC_OSX64) $(filter-out -s,$(CFLAGS_OSX64)) $(DIR_OSX64)/*.o src/hashcat-cli.c -o $@ $(LDFLAGS_OSX64)
 	cp $@ .
 
-$(DIR_OSX64)/engine.o: $(DIR_OSX64)/common.o src/engine.c
+$(DIR_OSX64)/engine.o: $(DIR_OSX64)/common.o $(DIR_OSX64)/engine-utils.o $(DIR_OSX64)/engine-algo.o src/engine.c
 	$(CC_OSX64) $(CFLAGS_OSX64) -c src/engine.c -o $@
+
+$(DIR_OSX64)/engine-utils.o: src/engine-utils.c
+	$(CC_OSX64) $(CFLAGS_OSX64) -c src/engine-utils.c -o $@
+
+$(DIR_OSX64)/engine-algo.o: src/engine-algo.c
+	$(CC_OSX64) $(CFLAGS_OSX64) -c src/engine-algo.c -o $@
 
 $(DIR_OSX64)/rp.o: $(DIR_OSX64)/common.o src/rp.c
 	$(CC_OSX64) $(CFLAGS_OSX64) -c src/rp.c -o $@
@@ -74,8 +80,14 @@ $(DIR_FREEBSD32)/hashcat-cli32.bin: $(DIR_FREEBSD32)/tsearch.o $(DIR_FREEBSD32)/
 	$(CC_FREEBSD32) $(CFLAGS_FREEBSD32) $(DIR_FREEBSD32)/*.o src/hashcat-cli.c -o $@ $(LDFLAGS_FREEBSD32)
 	cp $@ .
 
-$(DIR_FREEBSD32)/engine.o: $(DIR_FREEBSD32)/common.o src/engine.c
+$(DIR_FREEBSD32)/engine.o: $(DIR_FREEBSD32)/common.o $(DIR_FREEBSD32)/engine-utils.o $(DIR_FREEBSD32)/engine-algo.o src/engine.c
 	$(CC_FREEBSD32) $(CFLAGS_FREEBSD32) -c src/engine.c -o $@
+
+$(DIR_FREEBSD32)/engine-utils.o: src/engine-utils.c
+	$(CC_FREEBSD32) $(CFLAGS_FREEBSD32) -c src/engine-utils.c -o $@
+
+$(DIR_FREEBSD32)/engine-algo.o: src/engine-algo.c
+	$(CC_FREEBSD32) $(CFLAGS_FREEBSD32) -c src/engine-algo.c -o $@
 
 $(DIR_FREEBSD32)/rp.o: $(DIR_FREEBSD32)/common.o src/rp.c
 	$(CC_FREEBSD32) $(CFLAGS_FREEBSD32) -c src/rp.c -o $@
@@ -103,8 +115,14 @@ $(DIR_FREEBSD64)/hashcat-cli64.bin: $(DIR_FREEBSD64)/tsearch.o $(DIR_FREEBSD64)/
 	$(CC_FREEBSD64) $(CFLAGS_FREEBSD64) $(DIR_FREEBSD64)/*.o src/hashcat-cli.c -o $@ $(LDFLAGS_FREEBSD64)
 	cp $@ .
 
-$(DIR_FREEBSD64)/engine.o: $(DIR_FREEBSD64)/common.o src/engine.c
+$(DIR_FREEBSD64)/engine.o: $(DIR_FREEBSD64)/common.o $(DIR_FREEBSD64)/engine-utils.o $(DIR_FREEBSD64)/engine-algo.o src/engine.c
 	$(CC_FREEBSD64) $(CFLAGS_FREEBSD64) -c src/engine.c -o $@
+
+$(DIR_FREEBSD64)/engine-utils.o: src/engine-utils.c
+	$(CC_FREEBSD64) $(CFLAGS_FREEBSD64) -c src/engine-utils.c -o $@
+
+$(DIR_FREEBSD64)/engine-algo.o: src/engine-algo.c
+	$(CC_FREEBSD64) $(CFLAGS_FREEBSD64) -c src/engine-algo.c -o $@
 
 $(DIR_FREEBSD64)/rp.o: $(DIR_FREEBSD64)/common.o src/rp.c
 	$(CC_FREEBSD64) $(CFLAGS_FREEBSD64) -c src/rp.c -o $@
@@ -132,8 +150,14 @@ $(DIR_FREEBSDXOP)/hashcat-cliXOP.bin: $(DIR_FREEBSDXOP)/tsearch.o $(DIR_FREEBSDX
 	$(CC_FREEBSDXOP) $(CFLAGS_FREEBSDXOP) $(DIR_FREEBSDXOP)/*.o src/hashcat-cli.c -o $@ $(LDFLAGS_FREEBSDXOP)
 	cp $@ .
 
-$(DIR_FREEBSDXOP)/engine.o: $(DIR_FREEBSDXOP)/common.o src/engine.c
+$(DIR_FREEBSDXOP)/engine.o: $(DIR_FREEBSDXOP)/common.o $(DIR_FREEBSDXOP)/engine-utils.o $(DIR_FREEBSDXOP)/engine-algo.o src/engine.c
 	$(CC_FREEBSDXOP) $(CFLAGS_FREEBSDXOP) -c src/engine.c -o $@
+
+$(DIR_FREEBSDXOP)/engine-utils.o: src/engine-utils.c
+	$(CC_FREEBSDXOP) $(CFLAGS_FREEBSDXOP) -c src/engine-utils.c -o $@
+
+$(DIR_FREEBSDXOP)/engine-algo.o: src/engine-algo.c
+	$(CC_FREEBSDXOP) $(CFLAGS_FREEBSDXOP) -c src/engine-algo.c -o $@
 
 $(DIR_FREEBSDXOP)/rp.o: $(DIR_FREEBSDXOP)/common.o src/rp.c
 	$(CC_FREEBSDXOP) $(CFLAGS_FREEBSDXOP) -c src/rp.c -o $@
@@ -162,8 +186,14 @@ $(DIR_LINUX32)/hashcat-cli32.bin: $(DIR_LINUX32)/tsearch.o $(DIR_LINUX32)/rp.o  
 	$(CC_LINUX32) $(CFLAGS_LINUX32) $(DIR_LINUX32)/*.o src/hashcat-cli.c -o $@ $(LDFLAGS_LINUX32)
 	cp $@ .
 
-$(DIR_LINUX32)/engine.o: $(DIR_LINUX32)/common.o src/engine.c
+$(DIR_LINUX32)/engine.o: $(DIR_LINUX32)/common.o $(DIR_LINUX32)/engine-utils.o $(DIR_LINUX32)/engine-algo.o src/engine.c
 	$(CC_LINUX32) $(CFLAGS_LINUX32) -c src/engine.c -o $@
+
+$(DIR_LINUX32)/engine-utils.o: src/engine-utils.c
+	$(CC_LINUX32) $(CFLAGS_LINUX32) -c src/engine-utils.c -o $@
+
+$(DIR_LINUX32)/engine-algo.o: src/engine-algo.c
+	$(CC_LINUX32) $(CFLAGS_LINUX32) -c src/engine-algo.c -o $@
 
 $(DIR_LINUX32)/rp.o: $(DIR_LINUX32)/common.o src/rp.c
 	$(CC_LINUX32) $(CFLAGS_LINUX32) -c src/rp.c -o $@
@@ -192,8 +222,14 @@ $(DIR_LINUX64)/hashcat-cli64.bin: $(DIR_LINUX64)/tsearch.o $(DIR_LINUX64)/rp.o $
 	$(CC_LINUX64) $(CFLAGS_LINUX64) $(DIR_LINUX64)/*.o src/hashcat-cli.c -o $@ $(LDFLAGS_LINUX64)
 	cp $@ .
 
-$(DIR_LINUX64)/engine.o: $(DIR_LINUX64)/common.o src/engine.c
+$(DIR_LINUX64)/engine.o: $(DIR_LINUX64)/common.o $(DIR_LINUX64)/engine-utils.o $(DIR_LINUX64)/engine-algo.o src/engine.c
 	$(CC_LINUX64) $(CFLAGS_LINUX64) -c src/engine.c -o $@
+
+$(DIR_LINUX64)/engine-utils.o: src/engine-utils.c
+	$(CC_LINUX64) $(CFLAGS_LINUX64) -c src/engine-utils.c -o $@
+
+$(DIR_LINUX64)/engine-algo.o: src/engine-algo.c
+	$(CC_LINUX64) $(CFLAGS_LINUX64) -c src/engine-algo.c -o $@
 
 $(DIR_LINUX64)/rp.o: $(DIR_LINUX64)/common.o src/rp.c
 	$(CC_LINUX64) $(CFLAGS_LINUX64) -c src/rp.c -o $@
@@ -222,8 +258,14 @@ $(DIR_LINUXXOP)/hashcat-cliXOP.bin: $(DIR_LINUXXOP)/tsearch.o $(DIR_LINUXXOP)/rp
 	$(CC_LINUXXOP) $(CFLAGS_LINUXXOP) $(DIR_LINUXXOP)/*.o src/hashcat-cli.c -o $@ $(LDFLAGS_LINUXXOP)
 	cp $@ .
 
-$(DIR_LINUXXOP)/engine.o: $(DIR_LINUXXOP)/common.o src/engine.c
+$(DIR_LINUXXOP)/engine.o: $(DIR_LINUXXOP)/common.o $(DIR_LINUXXOP)/engine-utils.o $(DIR_LINUXXOP)/engine-algo.o src/engine.c
 	$(CC_LINUXXOP) $(CFLAGS_LINUXXOP) -c src/engine.c -o $@
+
+$(DIR_LINUXXOP)/engine-utils.o: src/engine-utils.c
+	$(CC_LINUXXOP) $(CFLAGS_LINUXXOP) -c src/engine-utils.c -o $@
+
+$(DIR_LINUXXOP)/engine-algo.o: src/engine-algo.c
+	$(CC_LINUXXOP) $(CFLAGS_LINUXXOP) -c src/engine-algo.c -o $@
 
 $(DIR_LINUXXOP)/rp.o: $(DIR_LINUXXOP)/common.o src/rp.c
 	$(CC_LINUXXOP) $(CFLAGS_LINUXXOP) -c src/rp.c -o $@
@@ -252,8 +294,14 @@ $(DIR_WINDOWS32)/hashcat-cli32.exe: $(DIR_WINDOWS32)/tsearch.o $(DIR_WINDOWS32)/
 	$(CC_WINDOWS32) $(CFLAGS_WINDOWS32) $(DIR_WINDOWS32)/*.o /usr/i686-w64-mingw32/lib/CRT_glob.o src/hashcat-cli.c -o $@ $(LDFLAGS_WINDOWS32)
 	cp $@ .
 
-$(DIR_WINDOWS32)/engine.o: $(DIR_WINDOWS32)/common.o src/engine.c
+$(DIR_WINDOWS32)/engine.o: $(DIR_WINDOWS32)/common.o $(DIR_WINDOWS32)/engine-utils.o $(DIR_WINDOWS32)/engine-algo.o src/engine.c
 	$(CC_WINDOWS32) $(CFLAGS_WINDOWS32) -c src/engine.c -o $@
+
+$(DIR_WINDOWS32)/engine-utils.o: src/engine-utils.c
+	$(CC_WINDOWS32) $(CFLAGS_WINDOWS32) -c src/engine-utils.c -o $@
+
+$(DIR_WINDOWS32)/engine-algo.o: src/engine-algo.c
+	$(CC_WINDOWS32) $(CFLAGS_WINDOWS32) -c src/engine-algo.c -o $@
 
 $(DIR_WINDOWS32)/rp.o: $(DIR_WINDOWS32)/common.o src/rp.c
 	$(CC_WINDOWS32) $(CFLAGS_WINDOWS32) -c src/rp.c -o $@
@@ -282,8 +330,14 @@ $(DIR_WINDOWS64)/hashcat-cli64.exe: $(DIR_WINDOWS64)/tsearch.o $(DIR_WINDOWS64)/
 	$(CC_WINDOWS64) $(CFLAGS_WINDOWS64) $(DIR_WINDOWS64)/*.o /usr/x86_64-w64-mingw32/lib/CRT_glob.o src/hashcat-cli.c -o $@ $(LDFLAGS_WINDOWS64)
 	cp $@ .
 
-$(DIR_WINDOWS64)/engine.o: $(DIR_WINDOWS64)/common.o src/engine.c
+$(DIR_WINDOWS64)/engine.o: $(DIR_WINDOWS64)/common.o $(DIR_WINDOWS64)/engine-utils.o $(DIR_WINDOWS64)/engine-algo.o src/engine.c
 	$(CC_WINDOWS64) $(CFLAGS_WINDOWS64) -c src/engine.c -o $@
+
+$(DIR_WINDOWS64)/engine-utils.o: src/engine-utils.c
+	$(CC_WINDOWS64) $(CFLAGS_WINDOWS64) -c src/engine-utils.c -o $@
+
+$(DIR_WINDOWS64)/engine-algo.o: src/engine-algo.c
+	$(CC_WINDOWS64) $(CFLAGS_WINDOWS64) -c src/engine-algo.c -o $@
 
 $(DIR_WINDOWS64)/rp.o: $(DIR_WINDOWS64)/common.o src/rp.c
 	$(CC_WINDOWS64) $(CFLAGS_WINDOWS64) -c src/rp.c -o $@
@@ -312,8 +366,14 @@ $(DIR_WINDOWSXOP)/hashcat-cliXOP.exe: $(DIR_WINDOWSXOP)/tsearch.o $(DIR_WINDOWSX
 	$(CC_WINDOWSXOP) $(CFLAGS_WINDOWSXOP) $(DIR_WINDOWSXOP)/*.o /usr/x86_64-w64-mingw32/lib/CRT_glob.o src/hashcat-cli.c -o $@ $(LDFLAGS_WINDOWSXOP)
 	cp $@ .
 
-$(DIR_WINDOWSXOP)/engine.o: $(DIR_WINDOWSXOP)/common.o src/engine.c
+$(DIR_WINDOWSXOP)/engine.o: $(DIR_WINDOWSXOP)/common.o $(DIR_WINDOWSXOP)/engine-utils.o $(DIR_WINDOWSXOP)/engine-algo.o src/engine.c
 	$(CC_WINDOWSXOP) $(CFLAGS_WINDOWSXOP) -c src/engine.c -o $@
+
+$(DIR_WINDOWSXOP)/engine-utils.o: src/engine-utils.c
+	$(CC_WINDOWSXOP) $(CFLAGS_WINDOWSXOP) -c src/engine-utils.c -o $@
+
+$(DIR_WINDOWSXOP)/engine-algo.o: src/engine-algo.c
+	$(CC_WINDOWSXOP) $(CFLAGS_WINDOWSXOP) -c src/engine-algo.c -o $@
 
 $(DIR_WINDOWSXOP)/rp.o: $(DIR_WINDOWSXOP)/common.o src/rp.c
 	$(CC_WINDOWSXOP) $(CFLAGS_WINDOWSXOP) -c src/rp.c -o $@
