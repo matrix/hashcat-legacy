@@ -33,6 +33,7 @@
 
 #if defined LINUX
 #include <termio.h>
+#include <pwd.h>
 #endif
 
 #define USAGE_VIEW      0
