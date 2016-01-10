@@ -42,9 +42,7 @@
 
 #define PROGNAME              (const char *) "hashcat"
 
-#define POTFILE               "hashcat.pot"
-
-#define VERSION_TXT           "2.00"
+#define VERSION_TXT           "2.0.1"
 #define VERSION_BIN           200
 
 #define BLOCK_SIZE            64

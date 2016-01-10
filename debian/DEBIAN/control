@@ -1,5 +1,5 @@
 Package: hashcat
-Version: 2.0.0-1
+Version: 2.0.1-1
 Architecture: amd64
 Maintainer: Gabriele Gristina <matrix@hashcat.net>
 Depends: libgmp-dev

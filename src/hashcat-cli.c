@@ -11,6 +11,8 @@
 
 #ifdef OSX
 #include <sys/sysctl.h>
+#include <uuid/uuid.h>
+#include <pwd.h>
 #endif
 
 #define _FILE_OFFSET_BITS 64
@@ -14169,6 +14171,84 @@ int main (int argc, char *argv[])
    * sanity check
    */
 
+  struct stat st;
+  char *homedir = NULL, *tmp = NULL;
+
+  #if defined LINUX || defined OSX || defined FREEBSD
+  if ((homedir = getenv("HOME")) == NULL)
+  {
+    homedir = getpwuid(getuid())->pw_dir;
+    if (!homedir)
+    {
+      log_error("Failed to get homedir path.\n");
+      exit (-1);
+    }
+  }
+  #else
+  char *tmp1 = getenv("HOMEDRIVE");
+  homedir = strcat(tmp1, getenv("HOMEPATH"));
+
+  if (!homedir)
+  {
+    log_error("Failed to get homedir path.\n");
+    exit (-1);
+  }
+  #endif
+
+  #if defined LINUX || defined OSX || defined FREEBSD
+  if (!(tmp = strcat(homedir, "/.hashcat")))
+  #else
+  if (!(tmp = strcat(homedir, "\.hashcat")))
+  #endif
+  {
+    log_error("Failed to append profile dir to homedir path (%s).\n", strerror(errno));
+    exit (-1);
+  }
+
+  memset (&st, 0, sizeof(st));
+  if (stat(tmp, &st) != 0)
+  {
+    // log_info ("Creating new profile directory (%s).", tmp);
+    if (mkdir (tmp, 0755) != 0)
+    {
+      log_error("Failed to create a new profile directory (%s)(%d)(%s).", tmp, errno, strerror(errno));
+      exit (-1);
+    }
+  }
+
+  #if defined LINUX || defined OSX || defined FREEBSD
+  if (!(tmp = strcat(tmp, "/sessions")))
+  #else
+  if (!(tmp = strcat(tmp, "\sessions")))
+  #endif
+  {
+    log_error("Failed to append session dir to profile path (%s).\n", strerror(errno));
+    exit (-1);
+  }
+
+  memset (&st, 0, sizeof(st));
+  if (stat(tmp, &st) != 0)
+  {
+    // log_info ("Creating new session directory (%s)\n", tmp);
+    if (mkdir (tmp, 0755) != 0)
+    {
+      log_error("Failed to create a new session directory (%s).", tmp);
+      exit (-1);
+    }
+  }
+
+  char *file_pot = NULL;
+
+  #if defined LINUX || defined OSX || defined FREEBSD
+  if (!(file_pot = strcat(tmp, "/hashcat.pot")))
+  #else
+  if (!(file_pot = strcat(tmp, "\hashcat.pot")))
+  #endif
+  {
+    log_error("Failed to append pot filename to session path (%s).\n", strerror(errno));
+    exit (-1);
+  }
+
   if (version_view == 1)
   {
     log_info (VERSION_TXT);
@@ -14683,8 +14763,6 @@ int main (int argc, char *argv[])
   /*
    * potfile 1
    */
-
-  char *file_pot = POTFILE;
 
   if (potfile_disable == 1)
   {

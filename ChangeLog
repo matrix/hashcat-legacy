@@ -1,4 +1,4 @@
-* changes v2.00 -> v2.01:
+* changes v2.0.0 -> v2.0.1:
 
 type.: Feature
 file.: Host
@@ -39,7 +39,7 @@ type.: Bug
 file.: Host
 desc.: Fixed --help text for hash type -m 9900 = Radmin2 (was wronly displayed as -m 9800 = Radmin2)
 
-* changes v0.50 -> v2.00:
+* changes v0.50 -> v2.0.0:
 
 type: Project
 file: All

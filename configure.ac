@@ -1,5 +1,5 @@
 AC_PREREQ([2.68])
-AC_INIT([hashcat], [2.00], [atom@hashcat.net])
+AC_INIT([hashcat], [2.0.1], [atom@hashcat.net])
 AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
 AC_CANONICAL_SYSTEM
